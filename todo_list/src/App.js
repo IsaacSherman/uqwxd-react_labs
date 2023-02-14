@@ -2,26 +2,25 @@ import React from "react";
 import "./App.css";
 const App = () => 
 {
-
-    React.useEffect(()=>{
-        const json = localStorage.getItem("todos");
-        const loadedTodos = JSON.parse(json);
-        if(loadedTodos){
-            setTodos(loadedTodos);
-        }
-    },[])
-
-React.useEffect(()=>{
-    const json = JSON.stringify(todos);
-    localStorage.setItem("todos", json);
-},[todos])
-
-
-
   const [todos, setTodos] = React.useState([]);
   const [todo, setTodo] = React.useState("");
   const [todoEditing, setTodoEditing] = React.useState(null);
   const [editingText, setEditingText] = React.useState("");
+
+  
+  React.useEffect(()=>{
+    const json = localStorage.getItem("todos");
+    const loadedTodos = JSON.parse(json);
+    if(loadedTodos){
+        setTodos(loadedTodos);
+    }
+},[])
+
+React.useEffect(()=>{
+const json = JSON.stringify(todos);
+localStorage.setItem("todos", json);
+},[todos])
+
   // Add the handlesubmit code here
     function handleSubmit(e) {
         e.preventDefault();
