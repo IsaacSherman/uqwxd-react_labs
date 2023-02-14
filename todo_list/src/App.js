@@ -2,6 +2,22 @@ import React from "react";
 import "./App.css";
 const App = () => 
 {
+
+    React.useEffect(()=>{
+        const json = localStorage.getItem("todos");
+        const loadedTodos = JSON.parse(json);
+        if(loadedTodos){
+            setTodos(loadedTodos);
+        }
+    },[])
+
+React.useEffect(()=>{
+    const json = JSON.stringify(todos);
+    localStorage.setItem("todos", json);
+},[todos])
+
+
+
   const [todos, setTodos] = React.useState([]);
   const [todo, setTodo] = React.useState("");
   const [todoEditing, setTodoEditing] = React.useState(null);
@@ -76,8 +92,8 @@ const App = () =>
                     <div className="todo-actions">
                         <input type="checkbox" id="completed" checked={todo.completed}
                                         onChange={()=>toggleComplete(todo.id)}></input>
-                        <input type="text" onChange={(e)=>setEditingText(e.target.value)}></input>/input>{todo.text}
-                        <button onClick={()=>setTodoEditing(todo.id)}>Done</button>
+                        <input type="text" defaultValue={todo.text} onChange={(e)=>setEditingText(e.target.value)}></input>
+                        <button onClick={()=>submitEdits(todo.id)}>Done</button>
                         </div>
                     )
                     :
@@ -86,6 +102,7 @@ const App = () =>
 
                         <input type="checkbox" id="completed" checked={todo.completed}
                                         onChange={()=>toggleComplete(todo.id)}></input>
+                                        {todo.text}
                     
 
                 <button name="Edit" onClick={()=>setTodoEditing(todo.id)}>Edit</button>
@@ -94,12 +111,6 @@ const App = () =>
                     }
               </div>
               <div className="todo-actions">
-                {todo.id === todoEditing ? (
-                  <button onClick={() => submitEdits(todo.id)}>Submit Edits</button>
-                ) : (
-                  <button onClick={() => setTodoEditing(todo.id)}>Edit</button>
-                )}
-    
                 <button onClick={() => deleteToDo(todo.id)}>Delete</button>
               </div>
             </div>
